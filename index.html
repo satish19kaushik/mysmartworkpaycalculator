@@ -1,0 +1,258 @@
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Amount Calculator</title>
+    <style>
+        :root {
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --card-bg: #fff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --input-bg: #f4f4f4;
+            --input-border: #ddd;
+            --button-bg: #007bff;
+            --button-hover-bg: #0056b3;
+            --header-bg: linear-gradient(135deg, #6a11cb, #2575fc);
+            --header-text: #fff;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0, 0, 0, 0.5);
+            --input-bg: #333;
+            --input-border: #555;
+            --button-bg: #1e90ff;
+            --button-hover-bg: #1c7ed6;
+            --header-bg: linear-gradient(135deg, #0f2027, #2c5364);
+            --header-text: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .calculator {
+            background: var(--card-bg);
+            margin: 30px auto;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--card-shadow);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .calculator h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--button-bg);
+        }
+
+        .form-button button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 25px;
+            background: var(--button-bg);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-button button:hover {
+            background: var(--button-hover-bg);
+        }
+
+        .result {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: var(--button-bg);
+            font-weight: bold;
+        }
+
+     
+        footer {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto;
+            box-shadow: 0 -2px 5px var(--card-shadow);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                font-size: 1.2rem;
+            }
+
+            .calculator {
+                padding: 15px 20px;
+            }
+
+            .calculator h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input {
+                font-size: 0.9rem;
+            }
+
+            .form-button button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Smart Work Pay Calculator
+        <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+            <span id="theme-icon">☀️</span>
+        </div>
+    </header>
+
+    <div class="calculator">
+        <h1>Amount Calculator</h1>
+        <div class="form-group">
+            <label for="hour">Hours</label>
+            <input type="number" id="hour" value="0" placeholder="Enter hours" min="0">
+        </div>
+        <div class="form-group">
+            <label for="minute">Minutes</label>
+            <input type="number" id="minute" value="0" placeholder="Enter minutes" min="0">
+        </div>
+        <div class="form-group">
+            <label for="rate">Rate (Per Hour)</label>
+            <input type="number" id="rate" placeholder="Enter hourly rate" min="0">
+        </div>
+        <div class="form-button">
+            <button onclick="calculateValue()">Calculate</button>
+            <button onclick="resetFields()" style="background-color: var(--input-border); color: var(--text-color);">Reset</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    
+    <footer>
+        &copy; 2025, Powered by Satish Kaushik
+    </footer>
+    
+    <script>
+        function calculateValue() {
+            const hour = parseFloat(document.getElementById('hour').value);
+            const minute = parseFloat(document.getElementById('minute').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+
+            const resultDiv = document.getElementById('result');
+
+            if (!hour && !minute) {
+                resultDiv.textContent = 'Both hours and minutes cannot be zero.';
+                return;
+            }
+
+            if (!rate || rate <= 0) {
+                resultDiv.textContent = 'Please enter a valid rate.';
+                return;
+            }
+
+            const totalTimeInHours = hour + (minute / 60);
+            const totalValue = totalTimeInHours * rate;
+
+            resultDiv.textContent = `Total Value: ₹${totalValue.toFixed(2)}`;
+        }
+
+        function resetFields() {
+            document.getElementById('hour').value = '0';
+            document.getElementById('minute').value = '0';
+            document.getElementById('rate').value = '';
+            document.getElementById('result').textContent = '';
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const isDark = currentTheme === 'dark';
+            const newTheme = isDark ? 'light' : 'dark';
+
+            document.body.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+</html> 
+
