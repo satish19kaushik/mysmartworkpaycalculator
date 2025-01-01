@@ -246,12 +246,37 @@
             document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
             localStorage.setItem('theme', newTheme);
         }
+        function setupInputFieldBehavior(id) {
+            const inputField = document.getElementById(id);
+
+            inputField.addEventListener('focus', () => {
+                if (inputField.value === '0') {
+                    inputField.value = '';
+                }
+            });
+
+            inputField.addEventListener('blur', () => {
+                if (inputField.value.trim() === '') {
+                    inputField.value = '0';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupInputFieldBehavior('hour');
+            setupInputFieldBehavior('minute');
+            setupInputFieldBehavior('rate');
+
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('theme-icon').textContent = '☀️';
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.body.setAttribute('data-theme', savedTheme);
             document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
         });
+        
         // const version = "1.0.2"; // Update this version number when you deploy changes
         // window.location.href = `https://satish19kaushik.github.io/mysmartworkpaycalculator/?v=${version}`;
     </script>
