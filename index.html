@@ -1,6 +1,6 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -134,7 +134,7 @@
             font-weight: bold;
         }
 
-     
+
         footer {
             background: var(--header-bg);
             color: var(--header-text);
@@ -172,6 +172,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         Calculate Your Earnings
@@ -196,33 +197,72 @@
         </div>
         <div class="form-button">
             <button onclick="calculateValue()">Calculate</button>
-            <button onclick="resetFields()" style="background-color: var(--input-border); color: var(--text-color);">Reset</button>
+            <button onclick="resetFields()"
+                style="background-color: var(--input-border); color: var(--text-color);">Reset</button>
         </div>
         <div class="result" id="result"></div>
     </div>
 
-    
+
     <footer>
         &copy; 2025, Powered by Satish Kaushik
     </footer>
-    
+
     <script>
         function calculateValue() {
             const hour = parseFloat(document.getElementById('hour').value);
             const minute = parseFloat(document.getElementById('minute').value);
             const rate = parseFloat(document.getElementById('rate').value);
-
             const resultDiv = document.getElementById('result');
+            const hourField = document.getElementById('hour');
+            const minuteField = document.getElementById('minute');
+            const rateField = document.getElementById('rate');
 
             if (!hour && !minute) {
                 resultDiv.textContent = 'Both hours and minutes cannot be zero.';
                 return;
             }
 
+            if (rate <= 0 && hour < 0 && minute < 0) {
+                resultDiv.textContent = 'Please enter a valid number.';
+                rateField.style.border = '1px solid red';
+                minuteField.style.border = '1px solid red';
+                hourField.style.border = '1px solid red';
+                return;
+            } else {
+                rateField.style.border = '1px solid #ddd';
+            }
             if (!rate || rate <= 0) {
                 resultDiv.textContent = 'Please enter a valid rate.';
+                rateField.style.border = '1px solid red';
                 return;
+            } else {
+                rateField.style.border = '1px solid #ddd';
             }
+            if (hour < 0 && minute < 0) {
+                resultDiv.textContent = 'Hours and minutes cannot be negative.';
+                hourField.style.border = '1px solid red';
+                minuteField.style.border = '1px solid red';
+                return;
+            } else {
+                hourField.style.border = '1px solid #ddd';
+                minuteField.style.border = '1px solid #ddd';
+            }
+            if (hour < 0) {
+                resultDiv.textContent = 'Hours  cannot be negative.';
+                hourField.style.border = '1px solid red';
+                return;
+            } else {
+                hourField.style.border = '1px solid #ddd';
+            }
+            if (minute < 0) {
+                resultDiv.textContent = 'Minutes cannot be negative.';
+                minuteField.style.border = '1px solid red';
+                return;
+            } else {
+                minuteField.style.border = '1px solid #ddd';
+            }
+
 
             const totalTimeInHours = hour + (minute / 60);
             const totalValue = totalTimeInHours * rate;
@@ -276,10 +316,10 @@
             document.body.setAttribute('data-theme', savedTheme);
             document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
         });
-        
+
         // const version = "1.0.2"; // Update this version number when you deploy changes
         // window.location.href = `https://satish19kaushik.github.io/mysmartworkpaycalculator/?v=${version}`;
     </script>
 </body>
-</html> 
 
+</html>
