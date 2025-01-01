@@ -220,7 +220,12 @@
 
             if (!hour && !minute) {
                 resultDiv.textContent = 'Both hours and minutes cannot be zero.';
+                minuteField.style.border = '1px solid red';
+                hourField.style.border = '1px solid red';
                 return;
+            } else {
+                hourField.style.border = '1px solid #ddd';
+                minuteField.style.border = '1px solid #ddd';
             }
 
             if (rate <= 0 && hour < 0 && minute < 0) {
@@ -231,13 +236,8 @@
                 return;
             } else {
                 rateField.style.border = '1px solid #ddd';
-            }
-            if (!rate || rate <= 0) {
-                resultDiv.textContent = 'Please enter a valid rate.';
-                rateField.style.border = '1px solid red';
-                return;
-            } else {
-                rateField.style.border = '1px solid #ddd';
+                hourField.style.border = '1px solid #ddd';
+                minuteField.style.border = '1px solid #ddd';
             }
             if (hour < 0 && minute < 0) {
                 resultDiv.textContent = 'Hours and minutes cannot be negative.';
@@ -262,7 +262,13 @@
             } else {
                 minuteField.style.border = '1px solid #ddd';
             }
-
+            if (!rate || rate <= 0) {
+                resultDiv.textContent = 'Please enter a valid rate.';
+                rateField.style.border = '1px solid red';
+                return;
+            } else {
+                rateField.style.border = '1px solid #ddd';
+            }
 
             const totalTimeInHours = hour + (minute / 60);
             const totalValue = totalTimeInHours * rate;
